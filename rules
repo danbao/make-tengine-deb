@@ -57,7 +57,7 @@ override_dh_auto_build:
 		--with-file-aio \
 		$(WITH_SPDY) \
 		--with-cc-opt="$(CFLAGS)" \
-		--with-ld-opt="$(LDFLAGS)" \
+		--with-ld-opt="$(LDFLAGS) -Wl,-rpath,/usr/local/lib" \
 		--with-ipv6 \
 		--add-module=/tmp/replace-filter-nginx-module
 
@@ -96,7 +96,7 @@ configure_debug:
 		--with-file-aio \
 		$(WITH_SPDY) \
 		--with-cc-opt="$(CFLAGS)" \
-		--with-ld-opt="$(LDFLAGS)" \
+		--with-ld-opt="$(LDFLAGS) -Wl,-rpath,/usr/local/lib" \
 		--with-ipv6 \
 		--add-module=/tmp/replace-filter-nginx-module \
 		--with-debug
