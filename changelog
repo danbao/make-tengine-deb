@@ -1,4 +1,4 @@
-tengine (10.0.0-1) stable; urgency=low
+lzengine (10.0.0) stable; urgency=low
 
   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
 
