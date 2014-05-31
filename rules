@@ -11,7 +11,14 @@ WITH_SPDY := $(shell printf "Source: tengine\nBuild-Depends: libssl-dev (>= 1.0.
 	dh $@ 
 
 override_dh_auto_configure: configure_debug
-
+override_dh_shlibdeps:
+        # needed because other libraries depend on
+        # /usr/lib/<multiarch>/razor-desktop/libdesktop-razor.so, installed in
+        # this private directory, and that it cannot be found otherwise
+        #
+        # dpkg-shlibdeps: warning: couldn't find library libdesktop-razor.so needed by debian/razorqt-desktop/usr/lib/x86_64-linux-gnu/razor-desktop/libiconview.so (ELF format: 'elf64-x86-64'; RPATH: '')
+        # ...
+    dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
 override_dh_strip:
 	dh_strip -Xdebug
 
@@ -51,7 +58,9 @@ override_dh_auto_build:
 		$(WITH_SPDY) \
 		--with-cc-opt="$(CFLAGS)" \
 		--with-ld-opt="$(LDFLAGS)" \
-		--with-ipv6
+		--with-ipv6 \
+		--add-module=/tmp/replace-filter-nginx-module
+
 	dh_auto_build
 
 configure_debug:
@@ -89,6 +98,7 @@ configure_debug:
 		--with-cc-opt="$(CFLAGS)" \
 		--with-ld-opt="$(LDFLAGS)" \
 		--with-ipv6 \
+		--add-module=/tmp/replace-filter-nginx-module \
 		--with-debug
 
 override_dh_auto_install:
